@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationCodeMail;
 use Random\RandomException;
@@ -105,6 +106,7 @@ class AdminController extends Controller
   }
 
   /**
+   * @desc Sauvegarder les données modifiées du profil en BDD
    * @param Request $request
    * @return RedirectResponse
    */
@@ -132,7 +134,12 @@ class AdminController extends Controller
 
     $data->save();
 
-    return redirect()->back();
+    $notification = array(
+      'message' => 'Profile updated successfully!',
+      'alert-type' => 'success'
+    );
+
+    return redirect()->back()->with($notification);
   }
 
   /**
@@ -146,6 +153,47 @@ class AdminController extends Controller
     if (file_exists($fullPath)) {
       unlink($fullPath);
     }
+  }
+
+  /**
+   * @desc Modification du Mot de passe par l'utilisateur dans son profil
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function passwordUpdate(Request $request)
+  {
+    // Récupérer user connecté
+    $user = Auth::user();
+
+    // validation des champs du form
+    $request->validate([
+      'old_password' => 'required',
+      'new_password' => 'required|confirmed'
+    ]);
+
+    // check oldpassword avec password actuel du user connecté
+    if (!Hash::check($request->old_password, $user->password)) {
+      $notification = array(
+        'message' => 'Your old password does not matches with the password you provided. Please try again.',
+        'alert-type' => 'error'
+      );
+      return redirect()->back()->with($notification);
+    }
+
+    // Si oldpassword match avec le pwd actuel, on modifie le pwd actuel en bdd qui sera égal au new password saisit par le user
+    User::whereId($user->id)->update([
+      'password' => Hash::make($request->new_password)
+    ]);
+
+    Auth::logout();
+
+    $notification = array(
+      'message' => 'Password updated successfully!',
+      'alert-type' => 'success'
+    );
+
+    return redirect()->route('login')->with($notification);
+
   }
 
 }

@@ -24,7 +24,9 @@
         </li>
 
         <li class="dropdown notification-list topbar-dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+          <a
+            class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
+            aria-expanded="false">
             <i data-feather="bell" class="noti-icon"></i>
             <span class="badge bg-danger rounded-circle noti-icon-badge">9</span>
           </a>
@@ -46,7 +48,7 @@
               <!-- item-->
               <a href="javascript:void(0);" class="dropdown-item notify-item text-muted link-primary active">
                 <div class="notify-icon">
-                  <img src="assets/images/users/user-12.jpg" class="img-fluid rounded-circle" alt="" />
+                  <img src="assets/images/users/user-12.jpg" class="img-fluid rounded-circle" alt=""/>
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                   <p class="notify-details">Carl Steadham</p>
@@ -60,7 +62,7 @@
               <!-- item-->
               <a href="javascript:void(0);" class="dropdown-item notify-item text-muted link-primary">
                 <div class="notify-icon">
-                  <img src="assets/images/users/user-2.jpg" class="img-fluid rounded-circle" alt="" />
+                  <img src="assets/images/users/user-2.jpg" class="img-fluid rounded-circle" alt=""/>
                 </div>
                 <div class="notify-content">
                   <div class="d-flex align-items-center justify-content-between">
@@ -93,11 +95,18 @@
           </div>
         </li>
 
+        @php
+          $id = Auth::user()->id;
+          $profileData = \App\Models\User::find($id);
+        @endphp
+
         <li class="dropdown notification-list topbar-dropdown">
-          <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-            <img src="{{ asset('backend/assets/images/users/user-11.jpg') }}" alt="user-image" class="rounded-circle">
+          <a
+            class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button"
+            aria-haspopup="false" aria-expanded="false">
+            <img src="{{ !empty($profileData->photo) ? url('upload/user_images/' . $profileData->photo) : url('upload/no_image.jpg') }}" alt="user-image" class="rounded-circle">
             <span class="pro-user-name ms-1">
-              Christian <i class="mdi mdi-chevron-down"></i>
+              {{ $profileData->name }} <i class="mdi mdi-chevron-down"></i>
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
