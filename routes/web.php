@@ -20,7 +20,16 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+// Admin Logout
 Route::get('/admin/logout', [AdminController::class, 'adminLogout'])->name('admin.logout');
+
+// Two-Factor Authentication (2FA)
 Route::post('/admin/login', [AdminController::class, 'adminLogin'])->name('admin.login');
 Route::get('/verify', [AdminController::class, 'showVerification'])->name('custom.verification.form');
 Route::post('/verify', [AdminController::class, 'verificationVerify'])->name('custom.verification.verify');
+
+// Profile
+Route::middleware('auth')->group(function () {
+  Route::get('/profile', [AdminController::class, 'adminProfile'])->name('admin.profile');
+  Route::post('/profile/store', [AdminController::class, 'profileStore'])->name('profile.store');
+});

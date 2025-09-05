@@ -3,4 +3,5 @@
 - 📄 Bootstrap 5.3
 - 📊 Dashboard
 - 📚 MySQL
+- Librairies : toastr.js
 

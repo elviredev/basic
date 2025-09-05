@@ -93,4 +93,59 @@ class AdminController extends Controller
     return back()->withErrors(['code' => 'Invalid verification code.']);
   }
 
+  /**
+   * @desc Affiche la vue Profile d'un utilisateur connecté
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function adminProfile()
+  {
+    $id = Auth::user()->id;
+    $profileData = User::find($id);
+    return view('admin.admin_profile', compact('profileData'));
+  }
+
+  /**
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function profileStore(Request $request)
+  {
+    $id = Auth::user()->id;
+    $data = User::find($id);
+
+    $data->name = $request->name;
+    $data->email = $request->email;
+    $data->phone = $request->phone;
+    $data->address = $request->address;
+
+    $oldPhotoPath = $data->photo;
+    if ($request->hasFile('photo')) {
+      $file = $request->file('photo');
+      $filename = time() . '.' . $file->getClientOriginalExtension();
+      $file->move(public_path('upload/user_images'), $filename);
+      $data->photo = $filename;
+
+      if ($oldPhotoPath && $oldPhotoPath !== $filename) {
+        $this->deleteOldImage($oldPhotoPath);
+      }
+    }
+
+    $data->save();
+
+    return redirect()->back();
+  }
+
+  /**
+   * @desc Supprime l'ancienne image du dossier de destination
+   * @param string $oldPhotoPath
+   * @return void
+   */
+  private function deleteOldImage(string $oldPhotoPath): void
+  {
+    $fullPath = public_path('upload/user_images/') . $oldPhotoPath;
+    if (file_exists($fullPath)) {
+      unlink($fullPath);
+    }
+  }
+
 }
