@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\ReviewController;
 use App\Http\Controllers\Backend\HeroController;
+use App\Http\Controllers\TitleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -57,4 +58,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/edit-hero/{id}', 'editHero');
   });
 
+  // Title <H2> Change in interface with Javascript
+  Route::controller(TitleController::class)->group(function () {
+    Route::post('/edit-features/{id}', 'editFeatures');
+    Route::post('/edit-reviews/{id}', 'editReviews');
+    Route::post('/edit-faq/{id}', 'editFaq');
+  });
 });
