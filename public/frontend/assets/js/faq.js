@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 $(document).ready(function () {
 var Accordion = function(el, multiple) {
   this.el = el || {};
