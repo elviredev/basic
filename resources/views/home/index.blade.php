@@ -7,7 +7,7 @@
   @include('home.home_layout.features')
   <!-- end content -->
 
-  @include('home.home_layout.clarifies')
+  @include('home.home_layout.tool_quality')
   <!-- end content -->
 
   @include('home.home_layout.get_all')

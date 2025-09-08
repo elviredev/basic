@@ -5,7 +5,7 @@
     <div id="sidebar-menu">
 
       <div class="logo-box">
-        <a href="index.html" class="logo logo-light">
+        <a href="{{ route('home') }}" class="logo logo-light">
           <span class="logo-sm">
             <img src="{{ asset('backend/assets/images/logo-sm.png') }}" alt="" height="22">
           </span>
@@ -13,7 +13,7 @@
             <img src="{{ asset('backend/assets/images/logo-light.png') }}" alt="" height="24">
           </span>
         </a>
-        <a href="index.html" class="logo logo-dark">
+        <a href="{{ route('home') }}" class="logo logo-dark">
           <span class="logo-sm">
             <img src="{{ asset('backend/assets/images/logo-sm.png') }}" alt="" height="22">
           </span>
@@ -82,6 +82,21 @@
               </li>
               <li>
                 <a href="{{ route('add.feature') }}" class="tp-link">Add Features</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <a href="#sidebarTool" data-bs-toggle="collapse">
+            <i data-feather="cpu"></i>
+            <span> Tool Quality Setup </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarTool">
+            <ul class="nav-second-level">
+              <li>
+                <a href="{{ route('get.tool') }}" class="tp-link">Get Tool</a>
               </li>
             </ul>
           </div>

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home.index');
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('admin.index');
@@ -74,6 +74,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit/feature/{id}', 'editFeature')->name('edit.feature');
     Route::post('/update/feature', 'updateFeature')->name('update.feature');
     Route::get('/delete/feature/{id}', 'deleteFeature')->name('delete.feature');
+  });
+
+  // Tool Quality
+  Route::controller(HomeController::class)->group(function () {
+    Route::get('/get/tool', 'getTool')->name('get.tool');
+    Route::post('/update/tool', 'updateTool')->name('update.tool');
   });
 
 });

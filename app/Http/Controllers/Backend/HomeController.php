@@ -4,13 +4,19 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feature;
+use App\Models\ToolQuality;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class HomeController extends Controller
 {
+  /** =============== Features Section =============== */
+
+
   /**
    * @desc Affiche toutes les Features dans le Dashboard Admin
    * @return Factory|View|\Illuminate\View\View
@@ -25,7 +31,7 @@ class HomeController extends Controller
    * @desc Affiche le formulaire d'ajout d'une feature
    * @return Factory|View|\Illuminate\View\View
    */
-  public function addFeature(Request $request)
+  public function addFeature()
   {
     return view('admin.backend.features.add_feature');
   }
@@ -100,6 +106,71 @@ class HomeController extends Controller
       'message' => 'Feature deleted successfully!',
       'alert-type' => 'success'
     );
+    return redirect()->back()->with($notification);
+  }
+
+  /** =============== Tool Quality Section =============== */
+
+  /**
+   * @desc Afficher la partie Tool Quality Section
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function getTool()
+  {
+    $tool = ToolQuality::find(1);
+    return view('admin.backend.tool_quality.get_tool', compact('tool'));
+  }
+
+  /**
+   * @desc Mettre à jour la partie Tool Quality Section
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function updateTool(Request $request)
+  {
+    $tool_id = $request->id;
+    $tool = ToolQuality::findOrFail($tool_id);
+
+    if ($request->hasFile('image')) {
+      $image = $request->file('image');
+
+      // Intervention Image
+      $manager = new ImageManager(new Driver());
+      $name_generate = hexdec(uniqid()).".".$image->getClientOriginalExtension();
+      $image_resize = $manager->read($image);
+      $image_resize->resize(302, 618)
+        ->save(public_path('upload/tool_quality/'.$name_generate));
+      $save_url = 'upload/tool_quality/'.$name_generate;
+
+      // Supprimer l'ancienne image si elle existe
+      if ($tool->image && file_exists(public_path($tool->image))) {
+        unlink(public_path($tool->image));
+      }
+
+      // Mise à jour en BDD avec la nouvelle image
+      ToolQuality::find($tool_id)->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'image' => $save_url,
+      ]);
+
+      $notification = array(
+        'message' => 'Tool Quality Section updated with image successfully!',
+        'alert-type' => 'success'
+      );
+    } else {
+      // Mise à jour en BDD sans image
+      ToolQuality::find($tool_id)->update([
+        'title' => $request->title,
+        'description' => $request->description,
+      ]);
+
+      $notification = array(
+        'message' => 'Tool Quality Section updated without image successfully!',
+        'alert-type' => 'success'
+      );
+    }
+
     return redirect()->back()->with($notification);
   }
 
