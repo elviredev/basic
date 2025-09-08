@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Backend\ReviewController;
 use App\Http\Controllers\Backend\HeroController;
-use App\Http\Controllers\TitleController;
+use App\Http\Controllers\Backend\HomeController;
+use App\Http\Controllers\Backend\ReviewController;
+use App\Http\Controllers\Backend\TitleController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -64,4 +65,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/edit-reviews/{id}', 'editReviews');
     Route::post('/edit-faq/{id}', 'editFaq');
   });
+
+  // Features
+  Route::controller(HomeController::class)->group(function () {
+    Route::get('/all/features', 'allFeatures')->name('all.features');
+    Route::get('/add/feature', 'addFeature')->name('add.feature');
+    Route::post('/store/feature', 'storeFeature')->name('store.feature');
+    Route::get('/edit/feature/{id}', 'editFeature')->name('edit.feature');
+    Route::post('/update/feature', 'updateFeature')->name('update.feature');
+    Route::get('/delete/feature/{id}', 'deleteFeature')->name('delete.feature');
+  });
+
 });

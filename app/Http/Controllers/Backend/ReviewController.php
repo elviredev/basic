@@ -14,7 +14,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 class ReviewController extends Controller
 {
   /**
-   * @desc Affiche tous les avis clients
+   * @desc Affiche tous les avis clients dans le Dashboard Admin
    * @return Factory|View|\Illuminate\View\View
    */
   public function allReviews()

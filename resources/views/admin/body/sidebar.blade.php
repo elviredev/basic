@@ -37,12 +37,12 @@
         <li class="menu-title">Pages</li>
 
         <li>
-          <a href="#sidebarAuth" data-bs-toggle="collapse">
+          <a href="#sidebarReview" data-bs-toggle="collapse">
             <i data-feather="users"></i>
             <span> Review Setup </span>
             <span class="menu-arrow"></span>
           </a>
-          <div class="collapse" id="sidebarAuth">
+          <div class="collapse" id="sidebarReview">
             <ul class="nav-second-level">
               <li>
                 <a href="{{ route('all.reviews') }}" class="tp-link">All Reviews</a>
@@ -55,15 +55,33 @@
         </li>
 
         <li>
-          <a href="#sidebarError" data-bs-toggle="collapse">
+          <a href="#sidebarHero" data-bs-toggle="collapse">
             <i data-feather="alert-octagon"></i>
             <span> Hero Setup </span>
             <span class="menu-arrow"></span>
           </a>
-          <div class="collapse" id="sidebarError">
+          <div class="collapse" id="sidebarHero">
             <ul class="nav-second-level">
               <li>
                 <a href="{{ route('get.hero') }}" class="tp-link">Get Hero</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <a href="#sidebarFeatures" data-bs-toggle="collapse">
+            <i data-feather="aperture"></i>
+            <span> Features Setup </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarFeatures">
+            <ul class="nav-second-level">
+              <li>
+                <a href="{{ route('all.features') }}" class="tp-link">All Features</a>
+              </li>
+              <li>
+                <a href="{{ route('add.feature') }}" class="tp-link">Add Features</a>
               </li>
             </ul>
           </div>

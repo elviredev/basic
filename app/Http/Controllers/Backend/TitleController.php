@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
+use App\Models\Title;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\Title;
 
 class TitleController extends Controller
 {
