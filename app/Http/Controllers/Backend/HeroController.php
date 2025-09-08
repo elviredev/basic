@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Hero;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -24,7 +25,7 @@ class HeroController extends Controller
   }
 
   /**
-   * @desc Mettre à jour la partie Hero Section
+   * @desc Mettre à jour la partie Hero Section de manière classique
    * @param Request $request
    * @return RedirectResponse
    */
@@ -76,5 +77,28 @@ class HeroController extends Controller
     }
 
     return redirect()->back()->with($notification);
+  }
+
+  /**
+   * @desc Mettre à jour le titre et la description directement dans l'interface
+   * avec javascript
+   * @param Request $request
+   * @param $id
+   * @return JsonResponse
+   */
+  public function editHero(Request $request, $id)
+  {
+    $hero = Hero::findOrFail($id);
+
+    if ($request->has('title')) {
+      $hero->title = $request->title;
+    }
+
+    if ($request->has('description')) {
+      $hero->description = $request->description;
+    }
+
+    $hero->save();
+    return response()->json(['success' => true]);
   }
 }

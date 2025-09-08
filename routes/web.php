@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
   Route::controller(HeroController::class)->group(function () {
     Route::get('/get/hero', 'getHero')->name('get.hero');
     Route::post('/update/hero', 'updateHero')->name('update.hero');
+    // Edit Hero with Javascript
+    Route::post('/edit-hero/{id}', 'editHero');
   });
 
 });
