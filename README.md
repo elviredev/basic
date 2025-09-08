@@ -3,5 +3,12 @@
 - 📄 Bootstrap 5.3
 - 📊 Dashboard
 - 📚 MySQL
-- Librairies : toastr.js
+- Librairies : 
+    - toastr.js (message d'infos), 
+    - intervention image (resize image) : https://image.intervention.io/v3/getting-started/installation
 
+- Après chaque modification de web.php exécuter la commande suivante :
+
+```bash
+php artisan optimize
+```

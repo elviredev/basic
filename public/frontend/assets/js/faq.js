@@ -1,3 +1,6 @@
+import $ from "jquery";
+
+$(document).ready(function () {
 var Accordion = function(el, multiple) {
   this.el = el || {};
   this.multiple = multiple || false;
@@ -22,3 +25,5 @@ Accordion.prototype.dropdown = function(e) {
   };
 }
 var accordion = new Accordion($('.lonyo-faq-wrap1'), false);
+
+});

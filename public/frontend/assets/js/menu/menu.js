@@ -1,4 +1,8 @@
 /*---------- 03. Mobile Menu Active ----------*/
+import $ from "jquery";
+
+$(document).ready(function () {
+
 $.fn.vsmobilemenu = function (options) {
     var opt = $.extend({
         menuToggleBtn: ".lonyo-menu-toggle",
@@ -85,3 +89,4 @@ $.fn.vsmobilemenu = function (options) {
   };
 
   $(".lonyo-menu-wrapper").vsmobilemenu();
+});
