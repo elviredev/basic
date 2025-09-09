@@ -409,4 +409,18 @@ class HomeController extends Controller
     return redirect()->back()->with($notification);
   }
 
+  /**
+   * @desc Modifie les données via l'interface avec javascript
+   * @param Request $request
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function updateProcessData(Request $request, $id)
+  {
+    $process = Process::findOrFail($id);
+
+    $process->update($request->only('title', 'description'));
+    return response()->json(['success' => true, 'message' => 'Updated successfully']);
+  }
+
 }

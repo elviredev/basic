@@ -94,6 +94,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit/process/{id}', 'editProcess')->name('edit.process');
     Route::post('/update/process', 'updateProcess')->name('update.process');
     Route::get('/delete/process/{id}', 'deleteProcess')->name('delete.process');
+    // Edit Process with Javascript
+    Route::post('/update-process-data/{id}', 'updateProcessData');
   });
 
 

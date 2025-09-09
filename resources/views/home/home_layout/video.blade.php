@@ -44,10 +44,22 @@
               <img src="{{ asset('frontend/assets/images/v1/n' .$process->id. '.svg') }}" alt="">
             </div>
             <div class="lonyo-process-title">
-              <h4>{{ $process->title }}</h4>
+              <h4
+                class="editable-title"
+                contenteditable="{{ auth()->check() ? 'true' : 'false' }}"
+                data-id="{{ $process->id }}"
+              >
+                {{ $process->title }}
+              </h4>
             </div>
             <div class="lonyo-process-data">
-              <p>{{ $process->description }}</p>
+              <p
+                class="editable-description"
+                contenteditable="{{ auth()->check() ? 'true' : 'false' }}"
+                data-id="{{ $process->id }}"
+              >
+                {{ $process->description }}
+              </p>
             </div>
           </div>
         </div>
@@ -60,3 +72,49 @@
 <div class="lonyo-content-shape1">
   <img src="{{ asset('frontend/assets/images/shape/shape3.svg') }}" alt="">
 </div>
+
+{{-- CSRF Token --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    function saveChanges(element) {
+      let processId = element.dataset.id;
+      let field = element.classList.contains("editable-title") ? "title" : "description";
+      let newValue = element.innerText.trim();
+
+      fetch(`/update-process-data/${processId}`, {
+        method: "POST",
+        headers: {
+          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ [field]: newValue }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            console.log(`${field} updated successfully!`);
+          }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    // Auto save on Enter Key
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        saveChanges(e.target);
+      }
+    })
+
+    // Auto save on losing focus
+    document.querySelectorAll(".editable-title, .editable-description").forEach((el) => {
+      el.addEventListener("blur", function() {
+        saveChanges(el);
+      });
+    })
+
+  })
+</script>
