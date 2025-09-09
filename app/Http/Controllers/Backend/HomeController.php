@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Feature;
 use App\Models\Tab;
 use App\Models\ToolQuality;
+use App\Models\VideoSection;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -241,6 +242,74 @@ class HomeController extends Controller
 
       $notification = array(
         'message' => 'Tabs Section updated without image successfully!',
+        'alert-type' => 'success'
+      );
+    }
+    return redirect()->back()->with($notification);
+  }
+
+  /** =============== Video Section =============== */
+
+  /**
+   * @desc Afficher la partie Video Section
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function getVideo()
+  {
+    $video = VideoSection::find(1);
+    return view('admin.backend.video_section.get_video', compact('video'));
+  }
+
+  /**
+   * @desc Mettre à jour la partie Video Section
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function updateVideo(Request $request)
+  {
+    $video_id = $request->id;
+    $video = VideoSection::findOrFail($video_id);
+
+    if ($request->hasFile('image')) {
+      $image = $request->file('image');
+
+      // Intervention Image
+      $manager = new ImageManager(new Driver());
+      $name_generate = hexdec(uniqid()).".".$image->getClientOriginalExtension();
+      $image_resize = $manager->read($image);
+      $image_resize->resize(560, 400)
+        ->save(public_path('upload/video_section/'.$name_generate));
+      $save_url = 'upload/video_section/'.$name_generate;
+
+      // Supprimer l'ancienne image si elle existe
+      if ($video->image && file_exists(public_path($video->image))) {
+        unlink(public_path($video->image));
+      }
+
+      // Mise à jour en BDD avec la nouvelle image
+      VideoSection::find($video_id)->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'youtube' => $request->youtube,
+        'link' => $request->link,
+        'image' => $save_url,
+      ]);
+
+      $notification = array(
+        'message' => 'Video Section updated with image successfully!',
+        'alert-type' => 'success'
+      );
+    } else {
+      // Mise à jour en BDD sans image
+      VideoSection::find($video_id)->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'youtube' => $request->youtube,
+        'link' => $request->link,
+      ]);
+
+      $notification = array(
+        'message' => 'Video Section updated without image successfully!',
         'alert-type' => 'success'
       );
     }

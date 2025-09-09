@@ -76,12 +76,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/delete/feature/{id}', 'deleteFeature')->name('delete.feature');
   });
 
-  // Tool Quality - Tabs
+  // Tool Quality - Tabs - Video Sections in Homepage
   Route::controller(HomeController::class)->group(function () {
     Route::get('/get/tool', 'getTool')->name('get.tool');
     Route::post('/update/tool', 'updateTool')->name('update.tool');
     Route::get('/get/tabs', 'getTabs')->name('get.tabs');
     Route::post('/update/tabs', 'updateTabs')->name('update.tabs');
+    Route::get('/get/video', 'getVideo')->name('get.video');
+    Route::post('/update/video', 'updateVideo')->name('update.video');
   });
 
 
