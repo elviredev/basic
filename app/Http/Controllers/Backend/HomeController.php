@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feature;
+use App\Models\Process;
 use App\Models\Tab;
 use App\Models\ToolQuality;
 use App\Models\VideoSection;
@@ -313,6 +314,98 @@ class HomeController extends Controller
         'alert-type' => 'success'
       );
     }
+    return redirect()->back()->with($notification);
+  }
+
+  /** =============== Process Section =============== */
+
+  /**
+   * @desc Affiche tous les Process dans le Dashboard Admin
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function allProcess()
+  {
+    $process = Process::latest()->get();
+    return view('admin.backend.process_section.all_process', compact('process'));
+  }
+
+  /**
+   * @desc Affiche le formulaire d'ajout d'un process
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function addProcess()
+  {
+    return view('admin.backend.process_section.add_process');
+  }
+
+  /**
+   * @desc Sauvegarde le process en BDD
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function storeProcess(Request $request)
+  {
+    // Enregistrer la feature en BDD
+    Process::create([
+      'title' => $request->title,
+      'description' => $request->description,
+    ]);
+
+    $notification = array(
+      'message' => 'Process Section added successfully!',
+      'alert-type' => 'success'
+    );
+
+    return redirect()->route('all.process')->with($notification);
+  }
+
+  /**
+   * @desc Affiche le formulaire d'édition d'un process
+   * @param $id
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function editProcess($id)
+  {
+    $process = Process::findOrFail($id);
+    return view('admin.backend.process_section.edit_process', compact('process'));
+  }
+
+  /**
+   * @desc Met à jour un process en BDD
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function updateProcess(Request $request)
+  {
+    $process_id = $request->id;
+
+    // Modifier le process en BDD
+    Process::findOrFail($process_id)->update([
+      'title' => $request->title,
+      'description' => $request->description,
+    ]);
+
+    $notification = array(
+      'message' => 'Process updated successfully!',
+      'alert-type' => 'success'
+    );
+
+    return redirect()->route('all.process')->with($notification);
+  }
+
+  /**
+   * @desc Supprimer un process
+   * @param $id
+   * @return RedirectResponse
+   */
+  public function deleteProcess($id)
+  {
+    Process::findOrFail($id)->delete();
+
+    $notification = array(
+      'message' => "Process deleted successfully!",
+      'alert-type' => 'success'
+    );
     return redirect()->back()->with($notification);
   }
 

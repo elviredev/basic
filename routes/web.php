@@ -86,6 +86,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/update/video', 'updateVideo')->name('update.video');
   });
 
+  // Process Section
+  Route::controller(HomeController::class)->group(function () {
+    Route::get('/all/process', 'allProcess')->name('all.process');
+    Route::get('/add/process', 'addProcess')->name('add.process');
+    Route::post('/store/process', 'storeProcess')->name('store.process');
+    Route::get('/edit/process/{id}', 'editProcess')->name('edit.process');
+    Route::post('/update/process', 'updateProcess')->name('update.process');
+    Route::get('/delete/process/{id}', 'deleteProcess')->name('delete.process');
+  });
+
 
 
 });

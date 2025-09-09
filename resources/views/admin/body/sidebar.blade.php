@@ -132,6 +132,24 @@
           </div>
         </li>
 
+        <li>
+          <a href="#sidebarProcess" data-bs-toggle="collapse">
+            <i data-feather="command"></i>
+            <span> Process Setup </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarProcess">
+            <ul class="nav-second-level">
+              <li>
+                <a href="{{ route('all.process') }}" class="tp-link">All Process</a>
+              </li>
+              <li>
+                <a href="{{ route('add.process') }}" class="tp-link">Add Process</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
         <li class="menu-title mt-2">General</li>
 
         <li>
