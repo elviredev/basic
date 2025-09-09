@@ -26,49 +26,33 @@
         </div>
       </div>
     </div>
+
+    {{-- Process Section --}}
+    @php
+      // récupère tous les Process dont l’id est 1, 2 ou 3,
+      // puis retourne une collection indexée par id au lieu de par un simple index numérique.
+      // [1 => Process { id: 1, ... },  2 => Process { id: 2, ... }, 3 => Process { id: 3, ... }]
+      // au lieu de  [0 => Process { id: 1, ... },  1 => Process { id: 2, ... }, 2 => Process { id: 3, ... }]
+      $processes = \App\Models\Process::whereIn('id', [1,2,3])->get()->keyBy('id');
+    @endphp
     <div class="row">
-      <div class="col-xl-4 col-md-6">
-        <div class="lonyo-process-wrap" data-aos="fade-up" data-aos-duration="500">
-          <div class="lonyo-process-number">
-            <img src="{{ asset('frontend/assets/images/v1/n1.svg') }}" alt="">
-          </div>
-          <div class="lonyo-process-title">
-            <h4>Connect Your Accounts</h4>
-          </div>
-          <div class="lonyo-process-data">
-            <p>Link your bank, credit card or investment accounts to automatically track transactions and get a
-              complete financial overview</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-4 col-md-6">
-        <div class="lonyo-process-wrap" data-aos="fade-up" data-aos-duration="700">
-          <div class="lonyo-process-number">
-            <img src="{{ asset('frontend/assets/images/v1/n2.svg') }}" alt="">
-          </div>
-          <div class="lonyo-process-title">
-            <h4>Set Budgets & Goals</h4>
-          </div>
-          <div class="lonyo-process-data">
-            <p>Define your spending limits and savings goals for categories like groceries, bills or future
-              investments to stay on track.</p>
+
+      @foreach($processes as $process)
+        <div class="col-xl-4 col-md-6">
+          <div class="lonyo-process-wrap" data-aos="fade-up" data-aos-duration="500">
+            <div class="lonyo-process-number">
+              <img src="{{ asset('frontend/assets/images/v1/n' .$process->id. '.svg') }}" alt="">
+            </div>
+            <div class="lonyo-process-title">
+              <h4>{{ $process->title }}</h4>
+            </div>
+            <div class="lonyo-process-data">
+              <p>{{ $process->description }}</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-xl-4 col-md-6">
-        <div class="lonyo-process-wrap" data-aos="fade-up" data-aos-duration="900">
-          <div class="lonyo-process-number">
-            <img src="{{ asset('frontend/assets/images/v1/n3.svg') }}" alt="">
-          </div>
-          <div class="lonyo-process-title">
-            <h4>Monitor & Automate</h4>
-          </div>
-          <div class="lonyo-process-data">
-            <p>Check your financial dashboard for regular updates and set up automatic payments or savings to simplify
-              management.</p>
-          </div>
-        </div>
-      </div>
+      @endforeach
+
       <div class="border-bottom" data-aos="fade-up" data-aos-duration="500"></div>
     </div>
   </div>
