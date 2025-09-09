@@ -102,6 +102,21 @@
           </div>
         </li>
 
+        <li>
+          <a href="#sidebarTabs" data-bs-toggle="collapse">
+            <i data-feather="table"></i>
+            <span> Tabs Setup </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarTabs">
+            <ul class="nav-second-level">
+              <li>
+                <a href="{{ route('get.tabs') }}" class="tp-link">Get Tabs</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
         <li class="menu-title mt-2">General</li>
 
         <li>

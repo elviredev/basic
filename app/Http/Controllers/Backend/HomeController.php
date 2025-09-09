@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feature;
+use App\Models\Tab;
 use App\Models\ToolQuality;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -171,6 +172,78 @@ class HomeController extends Controller
       );
     }
 
+    return redirect()->back()->with($notification);
+  }
+
+  /** =============== Tabs Section =============== */
+
+  /**
+   * @desc Afficher la partie Tabs Section
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function getTabs()
+  {
+    $tabs = Tab::find(1);
+    return view('admin.backend.tabs.get_tabs', compact('tabs'));
+  }
+
+  /**
+   * @desc Mettre à jour la partie Tabs Section
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function updateTabs(Request $request)
+  {
+    $tabs_id = $request->id;
+    $tabs = Tab::findOrFail($tabs_id);
+
+    if ($request->hasFile('image')) {
+      $image = $request->file('image');
+
+      // Intervention Image
+      $manager = new ImageManager(new Driver());
+      $name_generate = hexdec(uniqid()).".".$image->getClientOriginalExtension();
+      $image_resize = $manager->read($image);
+      $image_resize->resize(307, 619)
+        ->save(public_path('upload/tabs/'.$name_generate));
+      $save_url = 'upload/tabs/'.$name_generate;
+
+      // Supprimer l'ancienne image si elle existe
+      if ($tabs->image && file_exists(public_path($tabs->image))) {
+        unlink(public_path($tabs->image));
+      }
+
+      // Mise à jour en BDD avec la nouvelle image
+      Tab::find($tabs_id)->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'tab_one_title' => $request->tab_one_title,
+        'tab_one_content' => $request->tab_one_content,
+        'tab_two_title' => $request->tab_two_title,
+        'tab_two_content' => $request->tab_two_content,
+        'image' => $save_url,
+      ]);
+
+      $notification = array(
+        'message' => 'Tabs Section updated with image successfully!',
+        'alert-type' => 'success'
+      );
+    } else {
+      // Mise à jour en BDD sans image
+      Tab::find($tabs_id)->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'tab_one_title' => $request->tab_one_title,
+        'tab_one_content' => $request->tab_one_content,
+        'tab_two_title' => $request->tab_two_title,
+        'tab_two_content' => $request->tab_two_content
+      ]);
+
+      $notification = array(
+        'message' => 'Tabs Section updated without image successfully!',
+        'alert-type' => 'success'
+      );
+    }
     return redirect()->back()->with($notification);
   }
 
