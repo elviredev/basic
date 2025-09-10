@@ -94,8 +94,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit/process/{id}', 'editProcess')->name('edit.process');
     Route::post('/update/process', 'updateProcess')->name('update.process');
     Route::get('/delete/process/{id}', 'deleteProcess')->name('delete.process');
-    // Edit Process with Javascript
+    // Edit Process in Homepage with Javascript
     Route::post('/update-process-data/{id}', 'updateProcessData');
+  });
+
+  // FAQ Section
+  Route::controller(HomeController::class)->group(function () {
+    Route::get('/all/faqs', 'allFaqs')->name('all.faqs');
+    Route::get('/add/faq', 'addFaq')->name('add.faq');
+    Route::post('/store/faq', 'storeFaq')->name('store.faq');
+    Route::get('/edit/faq/{id}', 'editFaq')->name('edit.faq');
+    Route::post('/update/faq', 'updateFaq')->name('update.faq');
+    Route::get('/delete/faq/{id}', 'deleteFaq')->name('delete.faq');
   });
 
 

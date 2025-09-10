@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Faq;
 use App\Models\Feature;
 use App\Models\Process;
 use App\Models\Tab;
@@ -421,6 +422,99 @@ class HomeController extends Controller
 
     $process->update($request->only('title', 'description'));
     return response()->json(['success' => true, 'message' => 'Updated successfully']);
+  }
+
+  /** =============== FAQ Section =============== */
+
+  /**
+   * @desc Affiche toutes les FAQs dans le Dashboard Admin
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function allFaqs()
+  {
+    $faqs = Faq::latest()->get();
+    return view('admin.backend.faqs.all_faqs', compact('faqs'));
+  }
+
+  /**
+   * @desc Affiche le formulaire d'ajout d'un faq
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function addFaq()
+  {
+    return view('admin.backend.faqs.add_faq');
+  }
+
+  /**
+   * @desc Sauvegarde une FAQ en BDD
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function storeFaq(Request $request)
+  {
+    // Enregistrer la feature en BDD
+    Faq::create([
+      'title' => $request->title,
+      'description' => $request->description,
+    ]);
+
+    $notification = array(
+      'message' => 'FAQ added successfully!',
+      'alert-type' => 'success'
+    );
+
+    return redirect()->route('all.faqs')->with($notification);
+  }
+
+  /**
+   * @desc Affiche le formulaire d'édition d'une FAQ
+   * @param $id
+   * @return Factory|View|\Illuminate\View\View
+   */
+  public function editFaq($id)
+  {
+    $faq = Faq::findOrFail($id);
+    return view('admin.backend.faqs.edit_faq', compact('faq'));
+  }
+
+  /**
+   * @desc Met à jour une FAQ en BDD
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function updateFaq(Request $request)
+  {
+    $faq_id = $request->id;
+
+    // Mettre à jour la FAQ en BDD
+    Faq::findOrFail($faq_id)->update([
+      'title' => $request->title,
+      'description' => $request->description,
+    ]);
+
+    $notification = array(
+      'message' => 'FAQ updated successfully!',
+      'alert-type' => 'success'
+    );
+
+    return redirect()->route('all.faqs')->with($notification);
+  }
+
+  /**
+   * @desc Supprimer une FAQ
+   * @param $id
+   * @return RedirectResponse
+   */
+  public function deleteFaq($id)
+  {
+    Faq::findOrFail($id)->delete();
+
+    $notification = array(
+      'message' => 'FAQ deleted successfully!',
+      'alert-type' => 'success'
+    );
+
+    return redirect()->back()->with($notification);
   }
 
 }

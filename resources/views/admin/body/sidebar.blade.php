@@ -150,6 +150,24 @@
           </div>
         </li>
 
+        <li>
+          <a href="#sidebarFaqs" data-bs-toggle="collapse">
+            <i data-feather="help-circle"></i>
+            <span> Faq Setup </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarFaqs">
+            <ul class="nav-second-level">
+              <li>
+                <a href="{{ route('all.faqs') }}" class="tp-link">All Faqs</a>
+              </li>
+              <li>
+                <a href="{{ route('add.faq') }}" class="tp-link">Add Faq</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
         <li class="menu-title mt-2">General</li>
 
         <li>
