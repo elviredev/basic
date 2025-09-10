@@ -108,6 +108,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/delete/faq/{id}', 'deleteFaq')->name('delete.faq');
   });
 
+  // CTA Section (update datas - title, description, image - with Javascript)
+  Route::controller(HomeController::class)->group(function () {
+    Route::post('/update-cta/{id}', 'updateCta');
+    Route::post('/update-cta-image/{id}', 'updateCtaImage');
+  });
+
 
 
 });

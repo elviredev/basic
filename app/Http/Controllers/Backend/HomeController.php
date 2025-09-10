@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cta;
 use App\Models\Faq;
 use App\Models\Feature;
 use App\Models\Process;
@@ -516,5 +517,56 @@ class HomeController extends Controller
 
     return redirect()->back()->with($notification);
   }
+
+  /** =============== CTA Section =============== */
+
+  /**
+   * @desc Modifie les données via l'interface avec javascript
+   * @param Request $request
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function updateCta(Request $request, $id)
+  {
+    $cta = Cta::findOrFail($id);
+
+    $cta->update($request->only('title', 'description'));
+    return response()->json(['success' => true, 'message' => 'Updated successfully']);
+  }
+
+  public function updateCtaImage(Request $request, $id)
+  {
+    $cta = Cta::findOrFail($id);
+
+    if ($request->hasFile('image')) {
+      $image = $request->file('image');
+
+      // Intervention Image
+      $manager = new ImageManager(new Driver());
+      $name_generate = hexdec(uniqid()).".".$image->getClientOriginalExtension();
+      $image_resize = $manager->read($image);
+      $image_resize->resize(306, 481)
+        ->save(public_path('upload/cta_section/'.$name_generate));
+      $save_url = 'upload/cta_section/'.$name_generate;
+
+      // Supprime old image dans le dossier public
+      if ($cta->image && file_exists(public_path($cta->image))) {
+        unlink(public_path($cta->image));
+      }
+
+      // Update image en BDD
+      $cta->update([
+        'image' => $save_url
+      ]);
+
+      return response()->json([
+        'success' => true,
+        'image_url' => asset($save_url),
+        'message' => 'Image updated successfully!'
+      ]);
+    }
+    return response()->json(['success' => false, 'message' => 'Image upload failed!']);
+  }
+
 
 }
