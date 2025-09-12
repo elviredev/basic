@@ -7,40 +7,40 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\Review;
+use App\Models\Team;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
-class ReviewController extends Controller
+class TeamController extends Controller
 {
   /**
-   * @desc Affiche tous les avis clients dans le Dashboard Admin
+   * @desc Affiche toutes les équipes dans le Dashboard Admin
    * @return Factory|View|\Illuminate\View\View
    */
-  public function allReviews()
+  public function allTeams()
   {
-    $reviews = Review::latest()->get();
-    return view('admin.backend.reviews.all_reviews', compact('reviews'));
+    $teams = Team::latest()->get();
+    return view('admin.backend.teams.all_teams', compact('teams'));
   }
 
   /**
-   * @desc Affiche le formulaire d'ajout d'un avis
+   * @desc Affiche le formulaire d'ajout d'une équipe
    * @return Factory|View|\Illuminate\View\View
    */
-  public function addReview()
+  public function addTeam()
   {
-    return view('admin.backend.reviews.add_review');
+    return view('admin.backend.teams.add_team');
   }
 
   /**
-   * @desc Sauvegarde l'avis en BDD
+   * @desc Sauvegarde l'équipe en BDD
    * @param Request $request
    * @return RedirectResponse
    */
-  public function storeReview(Request $request)
+  public function storeTeam(Request $request)
   {
     // Image par défaut si aucune image n'est fournie
-    $default_img = 'upload/review/no_image_review.webp';
+    $default_img = 'upload/team/no_image.jpg';
 
     $save_url = $default_img; // Valeur par défaut si pas d'image
 
@@ -51,47 +51,46 @@ class ReviewController extends Controller
       $manager = new ImageManager(new Driver());
       $name_generate = hexdec(uniqid()).".".$image->getClientOriginalExtension();
       $image_resize = $manager->read($image);
-      $image_resize->resize(60, 60)
-                   ->save(public_path('upload/review/'.$name_generate));
-      $save_url = 'upload/review/'.$name_generate;
+      $image_resize->resize(306, 400)
+        ->save(public_path('upload/team/'.$name_generate));
+      $save_url = 'upload/team/'.$name_generate;
     }
 
-    // Enregistrer l'avis en BDD
-    Review::create([
+    // Enregistrer l'équipe en BDD avec ou sans image
+    Team::create([
       'name' => $request->name,
       'position' => $request->position,
-      'message' => $request->message,
       'image' => $save_url,
     ]);
 
     $notification = array(
-      'message' => 'Review added successfully!',
+      'message' => 'Team added successfully!',
       'alert-type' => 'success'
     );
 
-    return redirect()->route('all.reviews')->with($notification);
+    return redirect()->route('all.teams')->with($notification);
   }
 
   /**
-   * @desc Affiche le formulaire d'édition d'un avis
+   * @desc Affiche le formulaire d'édition d'une équipe
    * @param $id
    * @return Factory|View|\Illuminate\View\View
    */
-  public function editReview($id)
+  public function editTeam($id)
   {
-    $review = Review::findOrFail($id);
-    return view('admin.backend.reviews.edit_review', compact('review'));
+    $team = Team::findOrFail($id);
+    return view('admin.backend.teams.edit_team', compact('team'));
   }
 
   /**
-   * @desc Mettre à jour un avis utilisateur
+   * @desc Mettre à jour une équipe
    * @param Request $request
    * @return RedirectResponse
    */
-  public function updateReview(Request $request)
+  public function updateTeam(Request $request)
   {
-    $review_id = $request->id;
-    $review = Review::findOrFail($review_id);
+    $team_id = $request->id;
+    $team = Team::findOrFail($team_id);
 
     if ($request->hasFile('image')) {
       $image = $request->file('image');
@@ -100,68 +99,68 @@ class ReviewController extends Controller
       $manager = new ImageManager(new Driver());
       $name_generate = hexdec(uniqid()).".".$image->getClientOriginalExtension();
       $image_resize = $manager->read($image);
-      $image_resize->resize(60, 60)
-        ->save(public_path('upload/review/'.$name_generate));
-      $save_url = 'upload/review/'.$name_generate;
+      $image_resize->resize(306, 400)
+        ->save(public_path('upload/team/'.$name_generate));
+      $save_url = 'upload/team/'.$name_generate;
 
-      // Supprimer l'ancienne image si elle existe
-      if ($review->image && $review->image !== 'upload/review/no_image_review.webp' && file_exists(public_path($review->image))) {
-        unlink(public_path($review->image));
+      // Supprimer l'ancienne image si elle existe sauf si c'est l'image par défaut
+      if ($team->image && $team->image !== 'upload/team/no_image.jpg' && file_exists(public_path($team->image))) {
+        unlink(public_path($team->image));
       }
 
       // Mise à jour en BDD avec la nouvelle image
-      Review::find($review_id)->update([
+      Team::find($team_id)->update([
         'name' => $request->name,
         'position' => $request->position,
-        'message' => $request->message,
         'image' => $save_url,
       ]);
 
       $notification = array(
-        'message' => 'Review updated with image successfully!',
+        'message' => 'Team member updated with image successfully!',
         'alert-type' => 'success'
       );
     } else {
       // Mise à jour en BDD sans image
-      Review::find($review_id)->update([
+      Team::find($team_id)->update([
         'name' => $request->name,
         'position' => $request->position,
-        'message' => $request->message,
       ]);
 
       $notification = array(
-        'message' => 'Review updated without image successfully!',
+        'message' => 'Team member updated without image successfully!',
         'alert-type' => 'success'
       );
     }
 
-    return redirect()->route('all.reviews')->with($notification);
+    return redirect()->route('all.teams')->with($notification);
   }
 
   /**
-   * @desc Supprimer un avis utilisateur
+   * @desc Supprimer une équipe
    * @param $id
    * @return RedirectResponse
    */
-  public function deleteReview($id)
+  public function deleteTeam($id)
   {
-    $item = Review::findOrFail($id);
+    $item = Team::findOrFail($id);
 
     // Supprimer old image sauf si c'est image par défaut
     if (
       !empty($item->image) &&
-      $item->image !== 'upload/review/no_image_review.webp' &&
+      $item->image !== 'upload/team/no_image.jpg' &&
       file_exists(public_path($item->image))
     ) {
       unlink(public_path($item->image));
     }
 
-    Review::findOrFail($id)->delete();
+    Team::findOrFail($id)->delete();
 
     $notification = array(
-      'message' => 'Review deleted successfully!',
+      'message' => 'Team member deleted successfully!',
       'alert-type' => 'success'
     );
     return redirect()->back()->with($notification);
   }
+
+
 }

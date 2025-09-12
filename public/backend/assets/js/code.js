@@ -1,3 +1,4 @@
+// Sweet Alert : Popup pour supprimer ou non un item
 $(function(){
   $(document).on('click','#delete',function(e){
     e.preventDefault();

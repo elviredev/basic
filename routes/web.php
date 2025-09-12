@@ -5,6 +5,8 @@ use App\Http\Controllers\Backend\HeroController;
 use App\Http\Controllers\Backend\HomeController;
 use App\Http\Controllers\Backend\ReviewController;
 use App\Http\Controllers\Backend\TitleController;
+use App\Http\Controllers\Backend\TeamController;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -114,6 +116,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-cta-image/{id}', 'updateCtaImage');
   });
 
+  // Team Page
+  Route::controller(TeamController::class)->group(function () {
+    Route::get('/all/teams', 'allTeams')->name('all.teams');
+    Route::get('/add/team', 'addTeam')->name('add.team');
+    Route::post('/store/team', 'storeTeam')->name('store.team');
+    Route::get('/edit/team/{id}', 'editTeam')->name('edit.team');
+    Route::post('/update/team', 'updateTeam')->name('update.team');
+    Route::get('/delete/team/{id}', 'deleteTeam')->name('delete.team');
+  });
+
 
 
 });
+
+// User non connecté
+Route::get('/team', [FrontendController::class, 'ourTeam'])->name('our.team');
+
