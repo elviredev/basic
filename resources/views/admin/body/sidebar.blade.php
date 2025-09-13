@@ -186,6 +186,21 @@
           </div>
         </li>
 
+        <li>
+          <a href="#sidebarAbout" data-bs-toggle="collapse">
+            <i data-feather="speaker"></i>
+            <span> About Page Setup </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarAbout">
+            <ul class="nav-second-level">
+              <li>
+                <a href="{{ route('get.about') }}" class="tp-link">About Page</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
         <li class="menu-title mt-2">General</li>
 
         <li>

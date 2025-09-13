@@ -46,9 +46,7 @@
     </div>
   </div>
 </div>
-<div class="lonyo-content-shape3">
-  <img src="{{ asset('frontend/assets/images/shape/shape2.svg') }}" alt="">
-</div>
+
 
 {{-- CSRF Token --}}
 <meta name="csrf-token" content="{{ csrf_token() }}">

@@ -126,10 +126,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/delete/team/{id}', 'deleteTeam')->name('delete.team');
   });
 
-
+  // About Page
+  Route::controller(FrontendController::class)->group(function () {
+    Route::get('/get/about', 'getAbout')->name('get.about');
+    Route::post('/update/about', 'updateAbout')->name('update.about');
+  });
 
 });
 
 // User non connecté
 Route::get('/team', [FrontendController::class, 'ourTeam'])->name('our.team');
+Route::get('/about', [FrontendController::class, 'aboutUs'])->name('about.us');
 

@@ -36,6 +36,4 @@
   </div>
   <div class="lonyo-content-shape2"></div>
 </div>
-<div class="lonyo-content-shape3">
-  <img src="{{ asset('frontend/assets/images/shape/shape2.svg') }}" alt="">
-</div>
+

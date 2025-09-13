@@ -14470,6 +14470,11 @@ body[data-sidebar=hidden] .content-page {
   width: 7.5rem;
 }
 
+.about-prevu-image {
+  height: 5rem;
+  width: 5.5rem;
+}
+
 .avatar-title {
   align-items: center;
   color: #fff;
