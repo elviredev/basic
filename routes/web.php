@@ -6,18 +6,22 @@ use App\Http\Controllers\Backend\HomeController;
 use App\Http\Controllers\Backend\ReviewController;
 use App\Http\Controllers\Backend\TitleController;
 use App\Http\Controllers\Backend\TeamController;
+use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+/* Home */
 Route::get('/', function () {
     return view('home.index');
 })->name('home');
 
+/* Dashboard */
 Route::get('/dashboard', function () {
     return view('admin.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+/* Profile */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -130,6 +134,15 @@ Route::middleware('auth')->group(function () {
   Route::controller(FrontendController::class)->group(function () {
     Route::get('/get/about', 'getAbout')->name('get.about');
     Route::post('/update/about', 'updateAbout')->name('update.about');
+  });
+
+  // Blog Page
+  Route::controller(BlogController::class)->group(function () {
+    Route::get('/blog/category', 'blogCategory')->name('all.blog.category');
+    Route::post('/store/blog/category', 'storeBlogCategory')->name('store.blog.category');
+    Route::get('/edit/blog/category/{id}', 'editBlogCategory');
+    Route::post('/update/blog/category', 'updateBlogCategory')->name('update.blog.category');
+    Route::get('/delete/blog/category/{id}', 'deleteBlogCategory')->name('delete.blog.category');
   });
 
 });

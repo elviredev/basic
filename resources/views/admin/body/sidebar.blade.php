@@ -201,7 +201,22 @@
           </div>
         </li>
 
-        <li class="menu-title mt-2">General</li>
+        <li class="menu-title mt-2">Blog</li>
+
+        <li>
+          <a href="#sidebarBlogCategory" data-bs-toggle="collapse">
+            <i data-feather="book-open"></i>
+            <span> Blog Category Setup </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarBlogCategory">
+            <ul class="nav-second-level">
+              <li>
+                <a href="{{ route('all.blog.category') }}" class="tp-link">Blog Categories</a>
+              </li>
+            </ul>
+          </div>
+        </li>
 
         <li>
           <a href="#sidebarBaseui" data-bs-toggle="collapse">
