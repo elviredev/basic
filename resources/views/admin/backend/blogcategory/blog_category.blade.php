@@ -47,7 +47,10 @@
                         onclick="categoryEdit(this.id)"
                       >Edit</button>
 
-                      <a href="{{ route('delete.blog.category', $item->id) }}" class="btn btn-danger btn-sm" id="delete">Delete</a>
+                      <a
+                        href="{{ route('delete.blog.category', $item->id) }}"
+                        class="btn btn-danger btn-sm" id="delete"
+                      >Delete</a>
                     </td>
                   </tr>
                 @endforeach
@@ -122,18 +125,31 @@
   </div>
 
   <script>
-    function categoryEdit(id){
-      $.ajax({
-        type: "GET",
-        url: "/edit/blog/category/" + id,
-        dataType: "json",
+    /**
+     * @desc va chercher une catégorie de blog côté serveur (en JSON) et remplit
+     * automatiquement le formulaire avec les infos de cette catégorie (nom + id)
+     * pour pouvoir l’éditer
+     * @param id
+     * @returns {Promise<void>}
+     */
+    async function categoryEdit(id) {
+      // On met une valeur provisoire pour éviter le champ vide
+      $('#cat').val("⏳ ..."); // jQuery
+      $('#cat_id').val(""); // jQuery
 
-        success: function(data){
-          // console.log(data);
-          $('#cat').val(data.category_name);
-          $('#cat_id').val(data.id);
-        }
-      })
+      try {
+        // Envoie une requête HTTP au serveur sur l'URL /edit/blog/category/id
+        const response = await fetch(`/edit/blog/category/${id}`)
+
+        // Récupère les données JSON et met à jour 2 champs du form
+        const data = await response.json();
+
+        $('#cat').val(data.category_name);
+        $('#cat_id').val(data.id);
+      } catch (error) {
+        console.error("Erreur :", error);
+        $('#cat').val("Erreur");
+      }
     }
   </script>
 
