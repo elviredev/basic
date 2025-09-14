@@ -219,6 +219,24 @@
         </li>
 
         <li>
+          <a href="#sidebarBlogPosts" data-bs-toggle="collapse">
+            <i data-feather="list"></i>
+            <span> Blog Posts Setup </span>
+            <span class="menu-arrow"></span>
+          </a>
+          <div class="collapse" id="sidebarBlogPosts">
+            <ul class="nav-second-level">
+              <li>
+                <a href="{{ route('all.blog.posts') }}" class="tp-link">All Blog Posts</a>
+              </li>
+              <li>
+                <a href="{{ route('add.blog.post') }}" class="tp-link">Add Blog Post</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
           <a href="#sidebarBaseui" data-bs-toggle="collapse">
             <i data-feather="package"></i>
             <span> Components </span>
