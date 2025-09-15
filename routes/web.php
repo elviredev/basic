@@ -160,4 +160,7 @@ Route::middleware('auth')->group(function () {
 // User non connecté
 Route::get('/team', [FrontendController::class, 'ourTeam'])->name('our.team');
 Route::get('/about', [FrontendController::class, 'aboutUs'])->name('about.us');
+Route::get('/blog', [FrontendController::class, 'blogPage'])->name('blog.page');
+Route::get('/blog/details/{slug}', [FrontendController::class, 'blogDetails']);
+Route::get('/blog/category/{id}', [FrontendController::class, 'blogCategory']);
 

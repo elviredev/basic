@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogCategory;
+use App\Models\BlogPost;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManager;
@@ -10,11 +12,19 @@ use App\Models\About;
 
 class FrontendController extends Controller
 {
+  /**
+   * @desc Afficher la page Team
+   * @return \Illuminate\View\View
+   */
   public function ourTeam()
   {
     return view('home.team.team_page');
   }
 
+  /**
+   * @desc Afficher la page About
+   * @return \Illuminate\View\View
+   */
   public function aboutUs()
   {
     return view('home.about.about_us');
@@ -82,6 +92,41 @@ class FrontendController extends Controller
     }
 
     return redirect()->back()->with($notification);
+  }
+
+  /**
+   * @desc Afficher la page Blog avec les catégories
+   * @return \Illuminate\View\View
+   */
+  public function blogPage()
+  {
+    return view('home.blog.list_blog');
+  }
+
+  /**
+   * @desc Affiche le détail d'un article
+   * @param $slug
+   * @return \Illuminate\View\View
+   */
+  public function blogDetails($slug)
+  {
+    $post = BlogPost::where('slug', $slug)->firstOrFail();
+    return view('home.blog.blog_details', compact('post'));
+  }
+
+  /**
+   * @desc Afficher les articles reliés à une catégorie
+   * @param $id
+   * @return \Illuminate\View\View
+   */
+  public function blogCategory($id)
+  {
+    $postsCategory = BlogPost::where('category_id', $id)
+      ->latest()
+      ->paginate(3);
+
+    $category = BlogCategory::where('id', $id)->firstOrFail();
+    return view('home.blog.blog_category', compact('postsCategory', 'category'));
   }
 
 }
