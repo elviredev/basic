@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use App\Models\About;
+use App\Models\Contact;
 
 class FrontendController extends Controller
 {
+  /** =============== Team Page =============== */
   /**
    * @desc Afficher la page Team
    * @return \Illuminate\View\View
@@ -21,6 +23,9 @@ class FrontendController extends Controller
     return view('home.team.team_page');
   }
 
+
+  /** =============== About Page =============== */
+
   /**
    * @desc Afficher la page About
    * @return \Illuminate\View\View
@@ -29,7 +34,6 @@ class FrontendController extends Controller
   {
     return view('home.about.about_us');
   }
-
 
   /**
    * @desc Afficher la partie About Us Section
@@ -94,6 +98,8 @@ class FrontendController extends Controller
     return redirect()->back()->with($notification);
   }
 
+  /** =============== Blog Page =============== */
+
   /**
    * @desc Afficher la page Blog avec les catégories
    * @return \Illuminate\View\View
@@ -127,6 +133,64 @@ class FrontendController extends Controller
 
     $category = BlogCategory::where('id', $id)->firstOrFail();
     return view('home.blog.blog_category', compact('postsCategory', 'category'));
+  }
+
+  /** =============== Contact Page =============== */
+
+  /**
+   * @desc Afficher la Page Contact
+   * @return \Illuminate\View\View
+   */
+  public function contactPage()
+  {
+    return view('home.contact.contact_page');
+  }
+
+  /**
+   * @desc Sauvegarde les messages de contact en BDD
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function contactMessage(Request $request)
+  {
+    Contact::create([
+      'name' => $request->name,
+      'email' => $request->email,
+      'message' => $request->message
+    ]);
+
+    $notification = array(
+      'message' => 'Your message send successfully!',
+      'alert-type' => 'success'
+    );
+
+    return redirect()->back()->with($notification);
+  }
+
+  /***
+   * @desc Afficher les messages de contact dans la partie Admin dashboard
+   * @return \Illuminate\View\View
+   */
+  public function allMessages()
+  {
+    $messages = Contact::latest()->get();
+    return view('admin.backend.contacts.all_messages', compact('messages'));
+  }
+
+  /**
+   * @desc Supprimer un message
+   * @param $id
+   * @return RedirectResponse
+   */
+  public function deleteMessage($id)
+  {
+    Contact::findOrFail($id)->delete();
+
+    $notification = array(
+      'message' => 'Contact message deleted successfully!',
+      'alert-type' => 'success'
+    );
+    return redirect()->back()->with($notification);
   }
 
 }

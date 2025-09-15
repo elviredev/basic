@@ -236,6 +236,17 @@
           </div>
         </li>
 
+        <li class="menu-title mt-2">Contact</li>
+
+        <li>
+          <a href="{{ route('all.messages') }}">
+            <i data-feather="mail"></i>
+            <span> Contact Messages </span>
+          </a>
+        </li>
+
+        <li class="menu-title mt-2">Other</li>
+
         <li>
           <a href="#sidebarBaseui" data-bs-toggle="collapse">
             <i data-feather="package"></i>
@@ -252,13 +263,6 @@
               </li>
             </ul>
           </div>
-        </li>
-
-        <li>
-          <a href="widgets.html" class="tp-link">
-            <i data-feather="aperture"></i>
-            <span> Widgets </span>
-          </a>
         </li>
 
         <li>

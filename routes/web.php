@@ -155,6 +155,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/delete/blog/post/{id}', 'deleteBlogPost')->name('delete.blog.post');
   });
 
+  // Contact messages
+  Route::controller(FrontendController::class)->group(function () {
+    Route::get('/all/messages', 'allMessages')->name('all.messages');
+    Route::get('/delete/message/{id}', 'deleteMessage')->name('delete.message');
+  });
+
 });
 
 // User non connecté
@@ -163,4 +169,6 @@ Route::get('/about', [FrontendController::class, 'aboutUs'])->name('about.us');
 Route::get('/blog', [FrontendController::class, 'blogPage'])->name('blog.page');
 Route::get('/blog/details/{slug}', [FrontendController::class, 'blogDetails']);
 Route::get('/blog/category/{id}', [FrontendController::class, 'blogCategory']);
+Route::get('/contact', [FrontendController::class, 'contactPage'])->name('contact.page');
+Route::post('/contact/message', [FrontendController::class, 'contactMessage'])->name('contact.message');
 

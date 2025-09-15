@@ -25,12 +25,12 @@
   <link rel="stylesheet" href="{{ asset('frontend/assets/css/niceselect.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend/assets/css/animate.min.css') }}">
 
-
-
   <!-- Code Editor  -->
-
   <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend/assets/css/app.min.css') }}">
+
+  <!-- Toastr  -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" >
 </head>
 
 <body>
@@ -106,6 +106,32 @@
 <script src="{{ asset('frontend/assets/js/slick.js') }}"></script>
 
 <script src="{{ asset('frontend/assets/js/app.js') }}"></script>
+
+<!-- Toastr -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+  @if(Session::has('message'))
+  const type = "{{ Session::get('alert-type','info') }}"
+  switch(type){
+    case 'info':
+      toastr.info(" {{ Session::get('message') }} ");
+      break;
+
+    case 'success':
+      toastr.success(" {{ Session::get('message') }} ");
+      break;
+
+    case 'warning':
+      toastr.warning(" {{ Session::get('message') }} ");
+      break;
+
+    case 'error':
+      toastr.error(" {{ Session::get('message') }} ");
+      break;
+  }
+  @endif
+</script>
 
 
 </body>
